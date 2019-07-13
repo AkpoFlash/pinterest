@@ -1,0 +1,56 @@
+interface Person {
+  id: String!
+  email: String!
+  pins: [Pin]
+}
+
+type User implements Person {
+  id: String!
+  email: String!
+  pins: [Pin]
+}
+
+type Admin implements Person {
+  id: String!
+  email: String!
+  pins: [Pin]
+}
+
+type Query {
+  users: [User]
+  me: User
+}
+
+type Mutation {
+  sendShortLivedToken(email: String!): Boolean
+  createLongLivedToken(token: String!): String
+}
+
+type Pin {
+  title: String!
+  link: String!
+  image: String!
+  id: String!
+  user_id: String!
+}
+input PinInput {
+  title: String!
+  link: String!
+  image: String!
+}
+type Query {
+  pins: [Pin]
+  pinById(id: String!): Pin
+}
+type Mutation {
+  addPin(pin: PinInput!): Pin
+}
+type Subscription {
+  pinAdded: Pin
+}
+
+union SearchResult = User | Admin | Pin
+type Query {
+  search(text: String): [SearchResult]
+}
+
